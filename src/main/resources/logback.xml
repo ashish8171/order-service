@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <jmxConfigurator/>
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{E MMM d HH:mm:ss.SSS} | %X{userId}| %X{requestId} | %X{threadId} | %X{sessionId} | %-5level | [%t] | %class.%method | %msg%n </Pattern>
+        </encoder>
+    </appender>
+    <logger name="com.schneider" level="INFO" />
+    <root level="INFO">
+        <appender-ref ref="consoleAppender" />    
+    </root>
+</configuration>

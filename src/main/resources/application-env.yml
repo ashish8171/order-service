@@ -1,0 +1,46 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: 'true'
+    database-platform: org.hibernate.dialect.H2Dialect    
+  datasource:
+    username: ${DB_USERNAME}
+    url: ${DB_URL}
+    driverClassName: org.h2.Driver
+    password: ${DB_PASSWORD}
+  h2:
+    console:
+      enabled: ${H2_CONSOLE_ENABLED:false}
+      path: /h2-console
+
+resilience4j:
+  retry:
+    instances:
+      currency-service:
+        max-attempts: ${CURRENCY_SERVICE_RETRY_MAX_ATTEMPTS}
+        wait-duration: 5s
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions: org.springframework.web.client.RestClientException  
+  circuitbreaker:
+    circuit-breaker-aspect-order: 1
+    instances:
+      OrderService:
+        wait-duration-in-open-state: 1m
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-type: count-based
+        sliding-window-size: 5
+        minimum-number-of-calls: 5
+        slow-call-duration-threshold: 10s
+        slow-call-rate-threshold: 60
+        failure-rate-threshold: 60
+
+currency:
+  conversion:
+    baseUrl: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange
+    fields: country_currency_desc,exchange_rate,record_date
+    currency-filter: country_currency_desc:in:(dynamic_currency)
+    date-filter: record_date:gte:beginDate,record_date:lte:endDate
+    record-sort-filter: -record_date
+    lookback-period-in-months: ${CURRENCY_LOOKBACK_PERIOD_IN_MONTHS}
