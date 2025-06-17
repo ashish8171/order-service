@@ -46,3 +46,17 @@ This service creates an order and stores in the DB of your choice which can be c
    "convertedAmount": 708.6 // amount converted in the specified country currency
 }
 ```
+## How to clone and run project
+Use git clone or clone the repo from your preferred IDE
+Once clone, build the project using your preferred IDE or command prompt
+**Requirement**: JDK 21 and Maven latest veresion
+
+**Building the project**
+```shell
+cd <location of the project cloned> mvn clean install
+```
+**Running the Project**
+```shell
+<location of the project cloned> java -jar target/order-service-0.0.1-SNAPSHOT.jar
+```
+The service will be up and running and then you can use the attached **(src/test/resources)** SoapUI project to test the service
